@@ -15,7 +15,6 @@ the problem of MNIST digit classification.
 References:
 
     - textbooks: "Pattern Recognition and Machine Learning" -
-                                                                                                                                                                                                                                            Christopher M. Bishop, section 5
 
 """
 __docformat__ = 'restructedtext en'
@@ -34,7 +33,6 @@ import theano.tensor as T
 from logistic_sgd import LogisticRegression, load_data
 
 
-# start-snippet-1
 class HiddenLayer(object):
     def __init__(self, rng, input, n_in, n_out, W=None, b=None,
                  activation=T.tanh):
@@ -64,7 +62,6 @@ class HiddenLayer(object):
                            layer
         """
         self.input = input
-        # end-snippet-1
 
         # `W` is initialized with `W_values` which is uniformely sampled
         # from sqrt(-6./(n_in+n_hidden)) and sqrt(6./(n_in+n_hidden))

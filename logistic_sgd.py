@@ -340,7 +340,6 @@ def sgd_optimization_train(learning_rate=0.13, n_epochs=1000,
             y: train_set_y[index * batch_size: (index + 1) * batch_size]
         }
     )
-    # end-snippet-3
 
     ###############
     # TRAIN MODEL #

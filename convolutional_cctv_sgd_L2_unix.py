@@ -1,8 +1,9 @@
 __author__ = 'xie'
 
 """
-This code is an adaptation from the convoluntional network tutorial from deeplearning.net.
-It is an simplified version of the "LeNet" approach, details are described as below:
+This code is an adaptation from the convoluntional network tutorial from
+deeplearning.net. It is an simplified version of the "LeNet" approach,
+details are described as below:
 
 This implementation simplifies the model in the following ways:
  - LeNetConvPool doesn't implement location-specific gain and bias parameters
@@ -41,6 +42,7 @@ import matplotlib.pyplot as plt
 
 
 from sklearn import preprocessing
+
 
 class LeNetConvPoolLayer(object):
     """Pool Layer of a convolutional network """
@@ -119,7 +121,6 @@ class LeNetConvPoolLayer(object):
 
 def create_shared_dataset(dataset):
 
-
     def shared_dataset(data_xy, borrow=True):
         """ Function that loads the dataset into shared variables
 
@@ -145,7 +146,7 @@ def create_shared_dataset(dataset):
         # lets ous get around this issue
         return shared_x, T.cast(shared_y, 'int32')
 
-    train_set, test_set=dataset
+    train_set, test_set = dataset
     test_set_x, test_set_y = shared_dataset(test_set)
     # valid_set_x, valid_set_y = shared_dataset(valid_set)
     train_set_x, train_set_y = shared_dataset(train_set)
@@ -154,8 +155,8 @@ def create_shared_dataset(dataset):
     return rval
 
 
-
-def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001, learning_rate=0.01, d=0.0001, n_epochs=300,
+def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
+                    learning_rate=0.01, d=0.0001, n_epochs=300,
                     nkerns=[20, 50], batch_size=500):
     """ Demonstrates lenet on MNIST dataset
 
@@ -171,7 +172,7 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001, le
     :param dataset: path to the dataset used for training /testing (MNIST here)
 
     :type nkerns: list of ints
-    :param nk+++++++++++++++++++++++++++++++++erns: number of kernels on each layer
+    :param nkerns: number of kernels on each layer
     """
     rng = numpy.random.RandomState(23455)
 
@@ -189,7 +190,7 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001, le
 
     # start-snippet-1
     # x = T.matrix('x')   # the data is presented as rasterized images
-    x=T.tensor4('x')
+    x = T.tensor4('x')
     y = T.ivector('y')  # the labels are presented as 1D vector of
                         # [int] labels
 
@@ -203,7 +204,6 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001, le
     # (28, 28) is the size of MNIST images.
     # layer0_input = x.reshape((batch_size, 3, 60, 40))
     layer0_input = x.reshape((batch_size, 3, imgh, imgw))
-
 
     # Construct the first convolutional pooling layer:
     # filtering reduces the image size to (60-5+1 , 40-5+1) = (56, 36)
@@ -225,8 +225,8 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001, le
     # 4D output tensor is thus of shape (nkerns[0], nkerns[1], 12, 7)
     #     image_shape=(batch_size, nkerns[0], 28, 18),
 
-    lh1=(imgh-5+1)/2
-    lw1=(imgw-5+1)/2
+    lh1 = (imgh-5+1)/2
+    lw1 = (imgw-5+1)/2
 
     layer1 = LeNetConvPoolLayer(
         rng,
@@ -236,14 +236,12 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001, le
         poolsize=(2, 2)
     )
 
-
-
     # the HiddenLayer being fully-connected, it operates on 2D matrices of
     # shape (batch_size, num_pixels) (i.e matrix of rasterized images).
     # This will generate a matrix of shape (batch_size, nkerns[1] * 12 * 7),
     # or (500, 50 * 12 * 7) = (500, 3360) with the default values.
-    lh2=(lh1-5+1)/2
-    lw2=(lw1-5+1)/2
+    lh2 = (lh1-5+1)/2
+    lw2 = (lw1-5+1)/2
 
     layer2_input = layer1.output.flatten(2)
 
@@ -260,16 +258,15 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001, le
     layer3 = LogisticRegression(input=layer2.output, n_in=500, n_out=nclass)
 
     ### Regularization
-    L1=(abs(layer0.W).sum()
-        +abs(layer1.W).sum()
-        +abs(layer2.W).sum()
-        +abs(layer3.W).sum())
+    L1 = (abs(layer0.W).sum()
+          + abs(layer1.W).sum()
+          + abs(layer2.W).sum()
+          + abs(layer3.W).sum())
 
-    L2_sqr=((layer0.W**2).sum()
-        +(layer1.W**2).sum()
-        +(layer2.W**2).sum()
-        +(layer3.W**2).sum())
-
+    L2_sqr = ((layer0.W**2).sum()
+              + (layer1.W**2).sum()
+              + (layer2.W**2).sum()
+              + (layer3.W**2).sum())
 
     # the cost we minimize during training is the NLL of the model
     cost = layer3.negative_log_likelihood(y)+L1_reg*L1+L2_reg*L2_sqr
@@ -285,13 +282,11 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001, le
         }
     )
 
-
     # create a list of all model parameters to be fit by gradient descent
     params = layer3.params + layer2.params + layer1.params + layer0.params
 
     # theano expression to decay the learning rate across epoch
-    current_rate=theano.tensor.fscalar('current_rate')
-
+    current_rate = theano.tensor.fscalar('current_rate')
 
     # create a list of gradients for all model parameters
     grads = T.grad(cost, params)
@@ -315,7 +310,6 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001, le
             y: train_set_y[index * batch_size: (index + 1) * batch_size]
         }
     )
-    # end-snippet-1
 
     ###############
     # TRAIN MODEL #
@@ -334,18 +328,18 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001, le
                                   # check every epoch
 
     best_test_loss = numpy.inf
-    learning_rate=numpy.float32(learning_rate)
+    learning_rate = numpy.float32(learning_rate)
     best_iter = 0
     start_time = time.clock()
 
     epoch = 0
     done_looping = False
-    test_error=[]
+    test_error = []
 
     while (epoch < n_epochs) and (not done_looping):
         epoch = epoch + 1
-        learning_rate=learning_rate/(1+d*(epoch-1))
-        print "learning rate is %f" %learning_rate
+        learning_rate = learning_rate/(1+d*(epoch-1))
+        print "learning rate is %f" % learning_rate
 
         for minibatch_index in xrange(n_train_batches):
 
@@ -359,7 +353,7 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001, le
 
                 # compute zero-one loss on validation set
                 test_losses = [test_model(i) for i
-                                     in xrange(n_test_batches)]
+                               in xrange(n_test_batches)]
                 this_test_loss = numpy.mean(test_losses)
 
                 test_error.append(this_test_loss)
@@ -389,84 +383,78 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001, le
     print('Best validation score of %f %% obtained at iteration %i, '
           'with test performance %f %%' %
           (best_test_loss * 100., best_iter + 1, best_test_loss * 100.))
-    print 'The code ran for %.2fm' %((end_time - start_time) / 60.)
+    print 'The code ran for %.2fm' % ((end_time - start_time) / 60.)
 
     return params, test_error
 
+
 def Save_Parameter(model_path, params):
-    save_file=open(model_path, 'wb')
+    save_file = open(model_path, 'wb')
     # cPickle.dump(classifier.W.get_value(borrow=True), save_file, -1)
     # cPickle.dump(classifier.b.get_value(borrow=True), save_file, -1)
     cPickle.dump(params, save_file, -1)
     save_file.close()
 
 
-########################################################################################################################
 def get_train_test(data):
-    features=data[0]
-    labels=data[1]
+    features = data[0]
+    labels = data[1]
 
     #flatten feature to 2d matrix
 
     # flat_features=features.reshape(384, 60*40*3)
 
-    seed =randrange(100)
-    train_x, test_x, train_y, test_y=train_test_split(features, labels,
-                                                         test_size=0.2,
-                                                         random_state=seed)
+    seed = randrange(100)
+    train_x, test_x, train_y, test_y = train_test_split(features, labels,
+                                                        test_size=0.2,
+                                                        random_state=seed)
     return train_x, test_x, train_y, test_y
 
 
-
 def load_data(pickle_file):
-    load_file=open(pickle_file,'rb')
-    data=cPickle.load(load_file)
-    return  data
+    load_file = open(pickle_file,'rb')
+    data = cPickle.load(load_file)
+    return data
 
 
 def pickle_data(path, data):
-    file=path
-    save_file=open(file, 'wb')
+    file = path
+    save_file = open(file, 'wb')
     cPickle.dump(data, save_file, -1)
     save_file.close()
-
 
 
 if __name__ == '__main__':
     # EC2 Setting
     folder = os.path.dirname(__file__)
-    pickle_file=folder+"/home/ubuntu/pickle_data/image_secure_data.pkl"
-
+    pickle_file = folder+"/home/ubuntu/pickle_data/image_secure_data.pkl"
 
     # Windows Setting
     # folder="c:/users/xie/playground/cctv classification"
     # # pickle_file=folder+"/pickle_data/image_secure_data.pkl"
     # pickle_file=folder+"/pickle_data/image_secure_data - 54x36.pkl"
+    data = load_data(pickle_file)
+    img_list = data[0]
+    gender_y = data[3]
+    age_y = data[4]
+    race_y = data[5]
 
-    data=load_data(pickle_file)
-    img_list=data[0]
-    gender_y=data[3]
-    age_y=data[4]
-    race_y=data[5]
-
-    sss=StratifiedShuffleSplit(gender_y, 1, test_size=0.25, random_state=0)
+    sss = StratifiedShuffleSplit(gender_y, 1, test_size=0.25, random_state=0)
 
     for train_index, test_index in sss:
-        train_x, test_x=img_list[train_index], img_list[test_index]
+        train_x, test_x = img_list[train_index], img_list[test_index]
         # train_y, test_y=gender_y[train_index], gender_y[test_index]
-        train_y, test_y=race_y[train_index], race_y[test_index]
-        train_set=[train_x, train_y]
-        test_set=[test_x,test_y]
-        shuffled_dataset=[train_set, test_set]
-        shared_dataset=create_shared_dataset(shuffled_dataset)
+        train_y, test_y = race_y[train_index], race_y[test_index]
+        train_set = [train_x, train_y]
+        test_set = [test_x, test_y]
+        shuffled_dataset = [train_set, test_set]
+        shared_dataset = create_shared_dataset(shuffled_dataset)
         # Gender training
         # params, test_error=evaluate_lenet5(shared_dataset, 54, 36, 4)
 
         # Race training
-        params, test_error=evaluate_lenet5(shared_dataset, 54, 36, 6)
+        params, test_error = evaluate_lenet5(shared_dataset, 54, 36, 6)
         plt.plot(test_error)
 
-    model_file=folder+"/model/R_0.2463_54x36_20150204.pkl"
+    model_file = folder+"/model/R_0.2463_54x36_20150204.pkl"
     pickle_data(model_file, params)
-
-
