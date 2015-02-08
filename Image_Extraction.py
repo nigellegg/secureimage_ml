@@ -157,25 +157,24 @@ def load_image_data(exist_list):
 
 
 def pickle_data(path, data):
-    file=path+'image_secure_data.pkl'
-    save_file=open(file, 'wb')
+    file = path+'image_secure_data.pkl'
+    save_file = open(file, 'wb')
     cPickle.dump(data, save_file, -1)
     save_file.close()
 
-#################################################################################################################
 
 if __name__ == '__main__':
 
     # The following path parameters need to be changed according in the ec2 instance
-    # project_path = os.path.dirname(__file__)
-    # path = os.path.dirname(__file__)
+    project_path = os.path.dirname(__file__)
+    path = os.path.dirname(__file__)
 
-    img_data_path = "c:/users/xie/playground/cctv classification/img_data/"
-    project_path = "c:/users/xie/playground/cctv classification/"
+    img_data_path = "/srv/secureimage/class_images/tosend/"
+    #project_path = "c:/users/xie/playground/cctv classification/"
 
     # files=get_files(path)
-    img_csv_fg = img_data_path+'Flanagan and Growthpoint.csv'
-    img_csv_k = img_data_path+'Krugersdorp.csv'
+    img_csv_fg = img_data_path + 'Flanagan and Growthpoint.csv'
+    img_csv_k = img_data_path + 'Krugersdorp.csv'
     img_csv_dp = img_data_path+'Dischem and Pampa.csv'
 
     data_fg = np.genfromtxt(img_csv_fg, dtype=None, delimiter=',', skip_header=1)
