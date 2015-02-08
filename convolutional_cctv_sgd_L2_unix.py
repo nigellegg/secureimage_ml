@@ -453,7 +453,7 @@ if __name__ == '__main__':
         # params, test_error=evaluate_lenet5(shared_dataset, 54, 36, 4)
 
         # Race training
-        params, test_error = evaluate_lenet5(shared_dataset, 54, 36, 6)
+        params, test_error = evaluate_lenet5(shared_dataset, 32, 32, 6)
         plt.plot(test_error)
 
     model_file = folder+"/model/R_0.2463_54x36_20150204.pkl"
