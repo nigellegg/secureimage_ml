@@ -427,7 +427,7 @@ def pickle_data(path, data):
 if __name__ == '__main__':
     # EC2 Setting
     folder = os.path.dirname(__file__)
-    pickle_file = folder+"/home/ubuntu/pickle_data/image_secure_data.pkl"
+    pickle_file = folder+"/srv/secureimage/pickle_data/image_secure_data.pkl"
 
     # Windows Setting
     # folder="c:/users/xie/playground/cctv classification"
