@@ -169,7 +169,7 @@ if __name__ == '__main__':
     project_path = os.path.dirname(__file__)
     path = os.path.dirname(__file__)
 
-    img_data_path = "/srv/secureimage/class_images/age_images/"
+    img_data_path = "/srv/secureimage/age_images/"
     #project_path = "c:/users/xie/playground/cctv classification/"
 
     # files=get_files(path)
