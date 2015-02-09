@@ -189,5 +189,5 @@ if __name__ == '__main__':
     # len(total_data[total_data[:,6]=='male']) # 14712
     extracted_data = [img_list, exist_list, non_exist_list, gender_labels, age_labels, race_labels]
 
-    pickle_folder = project_path+"pickle_data/"
+    pickle_folder = project_path+"pickle_age_data/"
     pickle_data(pickle_folder, extracted_data)
