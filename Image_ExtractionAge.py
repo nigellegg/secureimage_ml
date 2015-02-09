@@ -78,9 +78,9 @@ def verify_images(data, path):
                     elif gender[0] == 'u':
                         gender_value = 2
                     else:
-                        gender_value = 5
+                        gender_value = 3
                 else:
-                    gender_value = 5
+                    gender_value = 3
 
                 # get label value for age
                 if len(age) > 0:
@@ -93,9 +93,9 @@ def verify_images(data, path):
                     elif age[0] == 'u':
                         age_value = 3
                     else:
-                        age_value = 5
+                        age_value = 4
                 else:
-                    age_value = 5
+                    age_value = 4
 
                 # get label value for race
                 if len(race) > 0:
@@ -108,9 +108,9 @@ def verify_images(data, path):
                     elif race[0] == 'u':
                         race_value = 3
                     else:
-                        race_value = 5
+                        race_value = 4
                 else:
-                    race_value = 5
+                    race_value = 4
 
                 gender_labels.append(gender_value)
                 age_labels.append(age_value)
@@ -169,7 +169,7 @@ if __name__ == '__main__':
     project_path = os.path.dirname(__file__)
     path = os.path.dirname(__file__)
 
-    img_data_path = "/srv/secureimage/class_images/tosend/"
+    img_data_path = "/srv/secureimage/class_images/age_data/"
     #project_path = "c:/users/xie/playground/cctv classification/"
 
     # files=get_files(path)
