@@ -438,7 +438,7 @@ if __name__ == '__main__':
     age_y = data[4]
     race_y = data[5]
 
-    sss = StratifiedShuffleSplit(gender_y, 1, test_size=0.25, random_state=0)
+    sss = StratifiedShuffleSplit(age_y, 1, test_size=0.25, random_state=0)
 
     for train_index, test_index in sss:
         train_x, test_x = img_list[train_index], img_list[test_index]
