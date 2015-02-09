@@ -456,5 +456,5 @@ if __name__ == '__main__':
         params, test_error = evaluate_lenet5(shared_dataset, 32, 32, 6)
         plt.plot(test_error)
 
-    model_file = folder+"/model/R_0.2463_54x36_20150204.pkl"
+    model_file = "/srv/secureimage/model/R_0.2463_54x36_20150204.pkl"
     pickle_data(model_file, params)
