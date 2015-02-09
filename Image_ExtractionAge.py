@@ -169,19 +169,17 @@ if __name__ == '__main__':
     project_path = os.path.dirname(__file__)
     path = os.path.dirname(__file__)
 
-    img_data_path = "/srv/secureimage/class_images/age_data/"
+    img_data_path = "/srv/secureimage/class_images/age_images/"
     #project_path = "c:/users/xie/playground/cctv classification/"
 
     # files=get_files(path)
-    img_csv_fg = img_data_path + 'Flanagan and Growthpoint.csv'
-    img_csv_k = img_data_path + 'Krugersdorp.csv'
-    img_csv_dp = img_data_path+'Dischem and Pampa.csv'
+    img_csv = img_data_path + 'summary.csv'
+    
+    data_sum = np.genfromtxt(img_csv, dtype=None, delimiter=',', skip_header=1)
+    #data_k = np.genfromtxt(img_csv_k, dtype=None, delimiter=',', skip_header=1)
+    #data_dp = np.genfromtxt(img_csv_dp, dtype=None, delimiter=',', skip_header=1)
 
-    data_fg = np.genfromtxt(img_csv_fg, dtype=None, delimiter=',', skip_header=1)
-    data_k = np.genfromtxt(img_csv_k, dtype=None, delimiter=',', skip_header=1)
-    data_dp = np.genfromtxt(img_csv_dp, dtype=None, delimiter=',', skip_header=1)
-
-    total_data = np.append(np.append(data_fg, data_dp, axis=0), data_k, axis=0)
+    total_data = np.append(data_k, axis=0)
 
     # exist_fg, non_exist_fg=verify_images(data_fg, path)
     # exist_k, non_exist_k=verify_images(data_k, path)
