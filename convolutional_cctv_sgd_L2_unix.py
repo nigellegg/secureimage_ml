@@ -158,8 +158,7 @@ def create_shared_dataset(dataset):
 def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
                     learning_rate=0.01, d=0.0001, n_epochs=300,
                     nkerns=[20, 50], batch_size=500):
-    """ Demonstrates lenet on MNIST dataset
-
+    """
     :rtype : object
     :type learning_rate: float
     :param learning_rate: learning rate used (factor for the stochastic
@@ -225,7 +224,7 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
     # 4D output tensor is thus of shape (nkerns[0], nkerns[1], 12, 7)
     #     image_shape=(batch_size, nkerns[0], 28, 18),
 
-    lh1 = (imgh-5+1)/2
+    lh1 = (imgh - 5 + 1)/2
     lw1 = (imgw-5+1)/2
 
     layer1 = LeNetConvPoolLayer(
@@ -412,7 +411,7 @@ def get_train_test(data):
 
 
 def load_data(pickle_file):
-    load_file = open(pickle_file,'rb')
+    load_file = open(pickle_file, 'rb')
     data = cPickle.load(load_file)
     return data
 
@@ -444,7 +443,8 @@ if __name__ == '__main__':
     for train_index, test_index in sss:
         train_x, test_x = img_list[train_index], img_list[test_index]
         # train_y, test_y=gender_y[train_index], gender_y[test_index]
-        train_y, test_y = race_y[train_index], race_y[test_index]
+        train_y, test_y = age_y[train_index], age_y[test_index]
+        #train_y, test_y = race_y[train_index], race_y[test_index]
         train_set = [train_x, train_y]
         test_set = [test_x, test_y]
         shuffled_dataset = [train_set, test_set]
@@ -453,7 +453,7 @@ if __name__ == '__main__':
         # params, test_error=evaluate_lenet5(shared_dataset, 54, 36, 4)
 
         # Race training
-        params, test_error = evaluate_lenet5(shared_dataset, 32, 32, 6)
+        params, test_error = evaluate_lenet5(shared_dataset, 54, 36, 6)
         plt.plot(test_error)
 
     model_file = folder+"/model/R_0.2463_54x36_20150204.pkl"
