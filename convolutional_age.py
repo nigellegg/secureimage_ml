@@ -453,7 +453,7 @@ if __name__ == '__main__':
         # params, test_error=evaluate_lenet5(shared_dataset, 54, 36, 4)
 
         # Age training
-        params, test_error = evaluate_lenet5(shared_dataset, 54, 36, 5)
+        params, test_error = evaluate_lenet5(shared_dataset, 40, 60, 5)
 
         # Race training
         #params, test_error = evaluate_lenet5(shared_dataset, 32, 32, 6)
