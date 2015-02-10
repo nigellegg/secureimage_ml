@@ -64,7 +64,7 @@ def verify_images(data, path):
             img = cv2.imread(img_path)
             if img is not None:
                 # img=cv2.resize(img, (40,60), interpolation = cv2.INTER_CUBIC)
-                img = cv2.resize(img, (32, 32), interpolation=cv2.INTER_CUBIC)
+                img = cv2.resize(img, (40, 60), interpolation=cv2.INTER_CUBIC)
                 img_list.append(img)
                 exist_list.append(img_path)
 
