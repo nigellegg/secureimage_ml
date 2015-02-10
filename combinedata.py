@@ -172,7 +172,7 @@ if __name__ == '__main__':
     path = os.path.dirname(__file__)
 
     img_data_path1 = "/srv/secureimage/age_images/"
-    img_data_path2 = "/srv/secureimage/class_images/"
+    img_data_path2 = "/srv/secureimage/class_images/tosend/"
     #project_path = "c:/users/xie/playground/cctv classification/"
     paths = [img_data_path1, img_data_path2]
     # files=get_files(path)
