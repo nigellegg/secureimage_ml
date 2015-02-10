@@ -450,7 +450,7 @@ if __name__ == '__main__':
         shuffled_dataset = [train_set, test_set]
         shared_dataset = create_shared_dataset(shuffled_dataset)
         #Gender training
-        params, test_error = evaluate_lenet5(shared_dataset, 54, 36, 4)
+        params, test_error = evaluate_lenet5(shared_dataset, 32, 32, 4)
 
         #Race training
         #params, test_error = evaluate_lenet5(shared_dataset, 32, 32, 6)
