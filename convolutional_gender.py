@@ -449,12 +449,12 @@ if __name__ == '__main__':
         test_set = [test_x, test_y]
         shuffled_dataset = [train_set, test_set]
         shared_dataset = create_shared_dataset(shuffled_dataset)
-        #Gender training
-        #params, test_error=evaluate_lenet5(shared_dataset, 54, 36, 4)
+        Gender training
+        params, test_error = evaluate_lenet5(shared_dataset, 54, 36, 4)
 
         #Race training
-        params, test_error = evaluate_lenet5(shared_dataset, 32, 32, 6)
+        #params, test_error = evaluate_lenet5(shared_dataset, 32, 32, 6)
         plt.plot(test_error)
 
-    model_file = "/srv/secureimage/model/R_0.2463_54x36_20150204.pkl"
+    model_file = "/srv/secureimage/model/G_0.2463_54x36_20150210.pkl"
     pickle_data(model_file, params)
