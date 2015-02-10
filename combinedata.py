@@ -1,4 +1,4 @@
-__author__ = 'xie'
+__author__ = 'nigel'
 
 # This routine is written to extract file information from the CCTV classification dataset
 
@@ -27,14 +27,15 @@ def DisplayImg(img, scale=1):
             print k  # else print its value
 
 
-def get_files(path):
+def get_files(paths):
     matches = []
     files = []
-    for root, dirnames, filenames in os.walk(path):
-        for filename in fnmatch.filter(filenames, '*.jpg'):
-            # print filename
-            files.append(filename)
-            matches.append(os.path.join(root, filename))
+    for path in paths:
+        for root, dirnames, filenames in os.walk(path):
+            for filename in fnmatch.filter(filenames, '*.jpg'):
+                # print filename
+                files.append(filename)
+                matches.append(os.path.join(root, filename))
 
     files = np.array(files)
     file_info = np.unique(files, return_counts=True)
