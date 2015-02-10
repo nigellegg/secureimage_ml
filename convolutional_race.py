@@ -443,8 +443,8 @@ if __name__ == '__main__':
     for train_index, test_index in sss:
         train_x, test_x = img_list[train_index], img_list[test_index]
         # train_y, test_y=gender_y[train_index], gender_y[test_index]
-        train_y, test_y = age_y[train_index], age_y[test_index]
-        #train_y, test_y = race_y[train_index], race_y[test_index]
+        #train_y, test_y = age_y[train_index], age_y[test_index]
+        train_y, test_y = race_y[train_index], race_y[test_index]
         train_set = [train_x, train_y]
         test_set = [test_x, test_y]
         shuffled_dataset = [train_set, test_set]
