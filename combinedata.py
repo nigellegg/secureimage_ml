@@ -70,7 +70,7 @@ def verify_images(data, path):
                     img_list.append(img)
                     exist_list.append(img_path)
 
-                    start to create label information for existing and valid images
+                    # start to create label information for existing and valid images
                     # get label value for gender
                     if len(gender) > 0:
                         if gender[0] == 'm':
@@ -176,13 +176,21 @@ if __name__ == '__main__':
     #project_path = "c:/users/xie/playground/cctv classification/"
     paths = [img_data_path1, img_data_path2]
     # files=get_files(path)
-    img_csv = img_data_path + 'summary.csv'
-    
-    data_sum = np.genfromtxt(img_csv, dtype=None, delimiter=',', skip_header=1)
+
+    img_csv_age = img_data_path1 + 'summary.csv'
+    img_csv_fg = img_data_path2 + 'Flanagan and Growthpoint.csv'
+    img_csv_k = img_data_path2 + 'Krugersdorp.csv'
+    img_csv_dp = img_data_path2+'Dischem and Pampa.csv'
+
+    data_fg = np.genfromtxt(img_csv_fg, dtype=None, delimiter=',', skip_header=1)
+    data_k = np.genfromtxt(img_csv_k, dtype=None, delimiter=',', skip_header=1)
+    data_dp = np.genfromtxt(img_csv_dp, dtype=None, delimiter=',', skip_header=1)
+
+    data_age = np.genfromtxt(img_csv_age, dtype=None, delimiter=',', skip_header=1)
     #data_k = np.genfromtxt(img_csv_k, dtype=None, delimiter=',', skip_header=1)
     #data_dp = np.genfromtxt(img_csv_dp, dtype=None, delimiter=',', skip_header=1)
 
-    total_data = data_sum
+    total_data = np.append(np.append(data_fg, data_dp, data_age, axis=0), data_k, axis=0)
 
     # exist_fg, non_exist_fg=verify_images(data_fg, path)
     # exist_k, non_exist_k=verify_images(data_k, path)
