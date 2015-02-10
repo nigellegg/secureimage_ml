@@ -449,7 +449,7 @@ if __name__ == '__main__':
         test_set = [test_x, test_y]
         shuffled_dataset = [train_set, test_set]
         shared_dataset = create_shared_dataset(shuffled_dataset)
-        Gender training
+        #Gender training
         params, test_error = evaluate_lenet5(shared_dataset, 54, 36, 4)
 
         #Race training
