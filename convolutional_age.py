@@ -284,7 +284,7 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
         [index],
         layer3.y_pred,
         givens={
-            x: new_data[index * batch_size: (index + 1) * batch_size]})
+            x: test_data[index * batch_size: (index + 1) * batch_size]})
 
     # create a list of all model parameters to be fit by gradient descent
     params = layer3.params + layer2.params + layer1.params + layer0.params
