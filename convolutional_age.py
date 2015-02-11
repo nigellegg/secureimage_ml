@@ -428,7 +428,7 @@ def pickle_data(path, data):
     save_file.close()
 
 
-def pred_age():
+if __name__ == '__main__':
     folder = os.path.dirname(__file__)
     pickle_file = "/srv/secureimage/pickle_age_data/image_secure_data.pkl"
 
@@ -451,7 +451,7 @@ def pred_age():
         # Age training
         params, test_error = evaluate_lenet5(shared_dataset, 40, 60, 5)
 
-    test_pickle = xxx
+    test_pickle = "/srv/secureimage/test_data/test_data.pkl"
     data = load_data(test_pickle)
     test_data = data[0]
 
@@ -459,8 +459,9 @@ def pred_age():
     for i in test_data:
         code = predict_model(i)
         age_pred.append(code)
-
     model_file = "/srv/secureimage/model/A_0.2463_54x36_20150209.pkl"
     pickle_data(model_file, params)
 
-    return age_pred
+    out = open("/srv/secureimage/test_data/age_pred.pkl")
+    pickle_data(out, age_pred)
+
