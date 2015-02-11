@@ -145,8 +145,14 @@ def create_shared_dataset(dataset):
         # lets ous get around this issue
         return shared_x, T.cast(shared_y, 'int32')
 
+    def shared_testset(data_x, borrow=True):
+        shared_x = theano.shared(numpy.asarray(data_x,
+                                               dtype=theano.config.floatX),
+                                 borrow=borrow)
+        return shared_x
+
     train_set, test_set = dataset
-    test_set_x = shared_dataset(test_set)
+    test_set_x = shared_testset(test_set)
     # valid_set_x, valid_set_y = shared_dataset(valid_set)
     train_set_x, train_set_y = shared_dataset(train_set)
 
