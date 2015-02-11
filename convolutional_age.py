@@ -146,11 +146,11 @@ def create_shared_dataset(dataset):
         return shared_x, T.cast(shared_y, 'int32')
 
     train_set, test_set = dataset
-    test_set_x, test_set_y = shared_dataset(test_set)
+    test_set_x = shared_dataset(test_set)
     # valid_set_x, valid_set_y = shared_dataset(valid_set)
     train_set_x, train_set_y = shared_dataset(train_set)
 
-    rval = [(train_set_x, train_set_y), (test_set_x, test_set_y)]
+    rval = [(train_set_x, train_set_y), (test_set_x)]
     return rval
 
 
