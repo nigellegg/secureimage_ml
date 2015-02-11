@@ -440,20 +440,20 @@ if __name__ == '__main__':
 
     sss = StratifiedShuffleSplit(age_y, 1, test_size=0.25, random_state=0)
 
+    test_pickle = "/srv/secureimage/test_data/test_data.pkl"
+    data = load_data(test_pickle)
+    test_data = data[0]
+
     for train_index, test_index in sss:
         train_x, test_x = img_list[train_index], img_list[test_index]
         train_y, test_y = age_y[train_index], age_y[test_index]
         train_set = [train_x, train_y]
-        test_set = [test_x, test_y]
+        test_set = [test_data]
         shuffled_dataset = [train_set, test_set]
         shared_dataset = create_shared_dataset(shuffled_dataset)
 
         # Age training
         params, test_error = evaluate_lenet5(shared_dataset, 40, 60, 5)
-
-    test_pickle = "/srv/secureimage/test_data/test_data.pkl"
-    data = load_data(test_pickle)
-    test_data = data[0]
 
     age_pred = []
     for i in test_data:
