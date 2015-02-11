@@ -1,4 +1,6 @@
-__author__ = 'xie'
+# -*- coding: utf-8 -*-
+# convolutional network to classify gender
+# copyright 22015 Chibwe Ltd
 
 """
 This code is an adaptation from the convoluntional network tutorial from
@@ -20,6 +22,7 @@ References:
    http://yann.lecun.com/exdb/publis/pdf/lecun-98.pdf
 
 """
+
 import os
 import sys
 import time
@@ -37,9 +40,6 @@ from mlp import HiddenLayer
 from random import randrange
 from sklearn.cross_validation import train_test_split
 from sklearn.cross_validation import StratifiedShuffleSplit
-
-import matplotlib.pyplot as plt
-
 
 from sklearn import preprocessing
 
@@ -281,6 +281,12 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
         }
     )
 
+    predict_model = theano.function(
+        [index],
+        layer3.y_pred,
+        givens={
+            x: new_data[index * batch_size: (index + 1) * batch_size]})
+
     # create a list of all model parameters to be fit by gradient descent
     params = layer3.params + layer2.params + layer1.params + layer0.params
 
@@ -423,15 +429,10 @@ def pickle_data(path, data):
     save_file.close()
 
 
-if __name__ == '__main__':
-    # EC2 Setting
+def pred_gender():
     folder = os.path.dirname(__file__)
     pickle_file = folder+"/srv/secureimage/pickle_data/image_secure_data.pkl"
 
-    # Windows Setting
-    # folder="c:/users/xie/playground/cctv classification"
-    # # pickle_file=folder+"/pickle_data/image_secure_data.pkl"
-    # pickle_file=folder+"/pickle_data/image_secure_data - 54x36.pkl"
     data = load_data(pickle_file)
     img_list = data[0]
     gender_y = data[3]
@@ -443,18 +444,24 @@ if __name__ == '__main__':
     for train_index, test_index in sss:
         train_x, test_x = img_list[train_index], img_list[test_index]
         train_y, test_y = gender_y[train_index], gender_y[test_index]
-        #train_y, test_y = age_y[train_index], age_y[test_index]
-        #train_y, test_y = race_y[train_index], race_y[test_index]
         train_set = [train_x, train_y]
         test_set = [test_x, test_y]
         shuffled_dataset = [train_set, test_set]
         shared_dataset = create_shared_dataset(shuffled_dataset)
+
         #Gender training
         params, test_error = evaluate_lenet5(shared_dataset, 32, 32, 4)
 
-        #Race training
-        #params, test_error = evaluate_lenet5(shared_dataset, 32, 32, 6)
-        plt.plot(test_error)
+    test_pickle = xxx
+    data = load_data(test_pickle)
+    test_data = data[0]
+
+    gend_pred = []
+    for i in test_data:
+        code = predict_model(i)
+        gend_pred.append(code)
 
     model_file = "/srv/secureimage/model/G_0.2463_54x36_20150210.pkl"
     pickle_data(model_file, params)
+
+    return gend_pred

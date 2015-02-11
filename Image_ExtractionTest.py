@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-# Image Extraction Race & Gender
+# Image Extraction Test
 # copyright 2015 Chibwe Ltd
 
-# This routine is written to extract file information from the CCTV classification dataset
+# vectorise test images.
 
 import cv2
 import os
@@ -57,66 +57,15 @@ def verify_images(data, path):
         date = img[3]+'/'
         hour = img[4]+'/'
         fileid = img[5]
-        gender = img[6]
-        age = img[7]
-        race = img[8]
 
         img_path = path+client+site+entrance+date+hour+fileid
         if os.path.isfile(img_path):
             img = cv2.imread(img_path)
             if img is not None:
                 # img=cv2.resize(img, (40,60), interpolation = cv2.INTER_CUBIC)
-                img = cv2.resize(img, (32, 32), interpolation=cv2.INTER_CUBIC)
+                img = cv2.resize(img, (40, 60), interpolation=cv2.INTER_CUBIC)
                 img_list.append(img)
                 exist_list.append(img_path)
-
-                # start to create label information for existing and valid images
-                # get label value for gender
-                if len(gender) > 0:
-                    if gender[0] == 'm':
-                        gender_value = 0
-                    elif gender[0] == 'f':
-                        gender_value = 1
-                    elif gender[0] == 'u':
-                        gender_value = 2
-                    else:
-                        gender_value = 3
-                else:
-                    gender_value = 3
-
-                # get label value for age
-                if len(age) > 0:
-                    if age[0] == 't':
-                        age_value = 0
-                    elif age[0] == 'm':
-                        age_value = 1
-                    elif age[0] == 'e':
-                        age_value = 2
-                    elif age[0] == 'u':
-                        age_value = 3
-                    else:
-                        age_value = 4
-                else:
-                    age_value = 4
-
-                # get label value for race
-                if len(race) > 0:
-                    if race[0] == 'b':
-                        race_value = 0
-                    elif race[0] == 'w':
-                        race_value = 1
-                    elif race[0] == 'o':
-                        race_value = 2
-                    elif race[0] == 'u':
-                        race_value = 3
-                    else:
-                        race_value = 4
-                else:
-                    race_value = 4
-
-                gender_labels.append(gender_value)
-                age_labels.append(age_value)
-                race_labels.append(race_value)
 
             # finish creating label information for existing and valid images
 
@@ -129,11 +78,8 @@ def verify_images(data, path):
     img_list = np.array(img_list)
     exist_list = np.array(exist_list)
     non_exist_list = np.array(non_exist_list)
-    gender_labels = np.array(gender_labels)
-    age_labels = np.array(age_labels)
-    race_labels = np.array(race_labels)
 
-    return img_list, exist_list, non_exist_list, gender_labels, age_labels, race_labels
+    return img_list, exist_list, non_exist_list
 
 
 def load_image_data(exist_list):
@@ -159,7 +105,7 @@ def load_image_data(exist_list):
 
 
 def pickle_data(path, data):
-    file = path+'image_secure_data.pkl'
+    file = path+'test_data.pkl'
     save_file = open(file, 'wb')
     cPickle.dump(data, save_file, -1)
     save_file.close()
@@ -171,27 +117,18 @@ if __name__ == '__main__':
     project_path = os.path.dirname(__file__)
     path = os.path.dirname(__file__)
 
-    img_data_path = "/srv/secureimage/class_images/tosend/"
+    img_data_path = "/srv/secureimage/test_images/"
     #project_path = "c:/users/xie/playground/cctv classification/"
 
     # files=get_files(path)
-    img_csv_fg = img_data_path + 'Flanagan and Growthpoint.csv'
-    img_csv_k = img_data_path + 'Krugersdorp.csv'
-    img_csv_dp = img_data_path+'Dischem and Pampa.csv'
+    img_csv = img_data_path + 'summary.csv'
 
-    data_fg = np.genfromtxt(img_csv_fg, dtype=None, delimiter=',', skip_header=1)
-    data_k = np.genfromtxt(img_csv_k, dtype=None, delimiter=',', skip_header=1)
-    data_dp = np.genfromtxt(img_csv_dp, dtype=None, delimiter=',', skip_header=1)
+    data_sum = np.genfromtxt(img_csv, dtype=None, delimiter=',', skip_header=1)
+  
+    total_data = data_sum
 
-    total_data = np.append(np.append(data_fg, data_dp, axis=0), data_k, axis=0)
+    img_list, exist_list, non_exist_list = verify_images(total_data, img_data_path)
+    extracted_data = [img_list, exist_list, non_exist_list]
 
-    # exist_fg, non_exist_fg=verify_images(data_fg, path)
-    # exist_k, non_exist_k=verify_images(data_k, path)
-    # exist_dp, non_exist_dp=verify_images(data_dp, path)
-    img_list, exist_list, non_exist_list, gender_labels, age_labels, race_labels = verify_images(total_data, img_data_path)
-    # img_list=load_image_data(exist_list)
-    # len(total_data[total_data[:,6]=='male']) # 14712
-    extracted_data = [img_list, exist_list, non_exist_list, gender_labels, age_labels, race_labels]
-
-    pickle_folder = project_path+"pickle_data/"
+    pickle_folder = project_path+"test_data/"
     pickle_data(pickle_folder, extracted_data)

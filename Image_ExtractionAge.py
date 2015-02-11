@@ -1,4 +1,6 @@
-__author__ = 'xie'
+# -*- coding: utf-8 -*-
+# ImageExtraction Age
+# copyright 2015 Chibwe Ltd
 
 # This routine is written to extract file information from the CCTV classification dataset
 

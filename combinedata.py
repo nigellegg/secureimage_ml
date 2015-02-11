@@ -1,6 +1,6 @@
-__author__ = 'nigel'
-
-# This routine is written to extract file information from the CCTV classification dataset
+# -*- codig: utf-8 -*-
+# combine data - combine two data sets into a single vector set
+# copyright 2015 Chibwe Ltd
 
 import cv2
 import os
