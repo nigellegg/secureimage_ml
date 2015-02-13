@@ -149,7 +149,10 @@ def create_shared_dataset(dataset):
         shared_x = theano.shared(numpy.asarray(data_x,
                                                dtype=theano.config.floatX),
                                  borrow=borrow)
-        return shared_x
+        shared_y = theano.shared(numpy.asarray(data_y,
+                                               dtype=theano.config.floatX),
+                                 borrow=borrow)
+        return shared_x, shared_y
 
     train_set, test_set = dataset
     test_set_x = shared_testset(test_set)
