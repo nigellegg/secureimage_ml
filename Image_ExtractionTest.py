@@ -76,8 +76,9 @@ def verify_images(data, path):
     img_list = np.array(img_list)
     exist_list = np.array(exist_list)
     non_exist_list = np.array(non_exist_list)
+    code_labels = np.array(code_labels)
 
-    return img_list, exist_list, non_exist_list
+    return img_list, exist_list, non_exist_list, code_labels
 
 
 def load_image_data(exist_list):
