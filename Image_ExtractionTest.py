@@ -64,7 +64,7 @@ def verify_images(data, path):
                 img = cv2.resize(img, (40, 60), interpolation=cv2.INTER_CUBIC)
                 img_list.append(img)
                 exist_list.append(img_path)
-                code_list.append(0)
+                code_labels.append(0)
             # finish creating label information for existing and valid images
 
             else:
