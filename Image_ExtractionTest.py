@@ -126,7 +126,7 @@ if __name__ == '__main__':
     total_data = data_sum
 
     img_list, exist_list, non_exist_list = verify_images(total_data, img_data_path)
-    extracted_data = [img_list, exist_list, non_exist_list, code_list]
+    extracted_data = [img_list, exist_list, non_exist_list, code_labels]
 
     pickle_folder = project_path+"test_data/"
     pickle_data(pickle_folder, extracted_data)
