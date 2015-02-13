@@ -447,7 +447,8 @@ if __name__ == '__main__':
 
     test_pickle = "/srv/secureimage/test_data/test_data.pkl"
     data = load_data(test_pickle)
-    test_data = data[0]
+    test_x = data[0]
+    test_y = data[3]
 
     for train_index, test_index in sss:
         train_x, test_x = img_list[train_index], img_list[test_index]
