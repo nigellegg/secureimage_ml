@@ -45,9 +45,7 @@ def get_files(path):
 
 def verify_images(data, path):
     exist_list = []       #list of existing and valid image with full path in local director
-    gender_labels = []    #gender labels for existing and valid images
-    age_labels = []       #age labels for existing and valid images
-    race_labels = []      #race labels for existing and valid images
+    code_labels = []    #gender labels for existing and valid images
     non_exist_list = []   #list of non-existing images
     img_list = []         #resized pixel data for existing and valid images
     for img in data:
@@ -66,7 +64,7 @@ def verify_images(data, path):
                 img = cv2.resize(img, (40, 60), interpolation=cv2.INTER_CUBIC)
                 img_list.append(img)
                 exist_list.append(img_path)
-
+                code_list.append(0)
             # finish creating label information for existing and valid images
 
             else:
@@ -128,7 +126,7 @@ if __name__ == '__main__':
     total_data = data_sum
 
     img_list, exist_list, non_exist_list = verify_images(total_data, img_data_path)
-    extracted_data = [img_list, exist_list, non_exist_list]
+    extracted_data = [img_list, exist_list, non_exist_list, code_list]
 
     pickle_folder = project_path+"test_data/"
     pickle_data(pickle_folder, extracted_data)
