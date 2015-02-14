@@ -460,7 +460,7 @@ if __name__ == '__main__':
 
     if os.path.isfile(model_file):
         input = open(model_file, 'rb')
-        params = pickle.load(input)
+        params = cPickle.load(input)
     else:
         params, test_error = evaluate_lenet5(shared_dataset, 40, 60, 5)
 
