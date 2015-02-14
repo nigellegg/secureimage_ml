@@ -194,6 +194,9 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
 
     # start-snippet-1
     # x = T.matrix('x')   # the data is presented as rasterized images
+
+
+def build_lenet_model():
     x = T.tensor4('x')
     y = T.ivector('y')  # the labels are presented as 1D vector of
                         # [int] labels
@@ -320,6 +323,8 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
         }
     )
 
+
+def train_lenet_model():
     ###############
     # TRAIN MODEL #
     ###############
