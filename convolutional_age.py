@@ -443,8 +443,6 @@ if __name__ == '__main__':
     age_y = data[4]
     race_y = data[5]
 
-    sss = StratifiedShuffleSplit(age_y, 1, test_size=0.25, random_state=0)
-
     test_pickle = "/srv/secureimage/test_data/test_data.pkl"
     data = load_data(test_pickle)
     test_x = data[0]
@@ -458,15 +456,19 @@ if __name__ == '__main__':
     shared_dataset = create_shared_dataset(dataset)
 
     # Age training
-    params, test_error = evaluate_lenet5(shared_dataset, 40, 60, 5)
+    model_file = "/srv/secureimage/model/A_0.2463_54x36_20150209.pkl"
+
+    if os.path.isfile(model_file):
+        input = open(model_file, 'rb')
+        params = pickle.load(input)
+    else:
+        params, test_error = evaluate_lenet5(shared_dataset, 40, 60, 5)
 
     age_pred = []
     for i in test_data:
         code = predict_model(i)
         age_pred.append(code)
-    model_file = "/srv/secureimage/model/A_0.2463_54x36_20150209.pkl"
     pickle_data(model_file, params)
 
     out = open("/srv/secureimage/test_data/age_pred.pkl")
     pickle_data(out, age_pred)
-
