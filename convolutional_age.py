@@ -464,9 +464,8 @@ if __name__ == '__main__':
     else:
         params, test_error = evaluate_lenet5(shared_dataset, 40, 60, 5)
 
-    i = 0
     age_pred = []
-    for i in test_data:
+    for i in test_set:
         code = predict_model(i)
         age_pred.append(code)
     pickle_data(model_file, params)
