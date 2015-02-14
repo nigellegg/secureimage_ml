@@ -140,7 +140,9 @@ def create_shared_dataset(dataset):
         # lets ous get around this issue
         return shared_x, T.cast(shared_y, 'int32')
 
-    def shared_testset(data_x, borrow=True):
+    def shared_testset(data_xy, borrow=True):
+
+        data_x, data_y = data_xy
         shared_x = theano.shared(numpy.asarray(data_x,
                                                dtype=theano.config.floatX),
                                  borrow=borrow)
@@ -448,16 +450,15 @@ if __name__ == '__main__':
     test_x = data[0]
     test_y = data[3]
 
-    for train_index, test_index in sss:
-        train_x, test_x = img_list[train_index], img_list[test_index]
-        train_y, test_y = age_y[train_index], age_y[test_index]
-        train_set = [train_x, train_y]
-        test_set = [test_x, test_y]
-        shuffled_dataset = [train_set, test_set]
-        shared_dataset = create_shared_dataset(shuffled_dataset)
+    train_x, test_x = img_list, test_y
+    train_y, test_y = age_y, test_y
+    train_set = [train_x, train_y]
+    test_set = [test_x, test_y]
+    dataset = [train_set, test_set]
+    shared_dataset = create_shared_dataset(dataset)
 
-        # Age training
-        params, test_error = evaluate_lenet5(shared_dataset, 40, 60, 5)
+    # Age training
+    params, test_error = evaluate_lenet5(shared_dataset, 40, 60, 5)
 
     age_pred = []
     for i in test_data:
