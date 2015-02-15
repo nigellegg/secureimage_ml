@@ -196,7 +196,9 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
     # x = T.matrix('x')   # the data is presented as rasterized images
 
 
-def build_lenet_model():
+def build_lenet_model(*args):
+    #if args:
+
     x = T.tensor4('x')
     y = T.ivector('y')  # the labels are presented as 1D vector of
                         # [int] labels
@@ -410,7 +412,7 @@ def Save_Parameter(model_path, params):
     save_file.close()
 
 
-def get_train_test(data):
+'''def get_train_test(data):
     features = data[0]
     labels = data[1]
 
@@ -422,7 +424,7 @@ def get_train_test(data):
     train_x, test_x, train_y, test_y = train_test_split(features, labels,
                                                         test_size=0.2,
                                                         random_state=seed)
-    return train_x, test_x, train_y, test_y
+    return train_x, test_x, train_y, test_y'''
 
 
 def load_data(pickle_file):
