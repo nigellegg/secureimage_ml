@@ -342,7 +342,7 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
     epoch = 0
     done_looping = False
     test_error = []
-
+    predlist = []
     while (epoch < n_epochs) and (not done_looping):
         epoch = epoch + 1
         learning_rate = learning_rate/(1+d*(epoch-1))
@@ -355,6 +355,9 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
             if iter % 100 == 0:
                 print 'training @ iter = ', iter
             cost_ij = train_model(minibatch_index, numpy.float32(learning_rate))
+
+            preds = predict_model(minibatch_index)
+            predlist.append(preds)
 
             if (iter + 1) % test_frequency == 0:
 
@@ -392,7 +395,7 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
           (best_test_loss * 100., best_iter + 1, best_test_loss * 100.))
     print 'The code ran for %.2fm' % ((end_time - start_time) / 60.)
 
-    return params, test_error
+    return params, test_error, predlist
 
 
 def Save_Parameter(model_path, params):
