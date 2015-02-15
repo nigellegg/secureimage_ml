@@ -449,7 +449,7 @@ if __name__ == '__main__':
     train_set = [train_x, train_y]
     test_set = [test_x, test_y]
     dataset = [train_set, test_set]
-    shared_dataset = create_shared_dataset(shuffled_dataset)
+    shared_dataset = create_shared_dataset(dataset)
 
     model_file = "/srv/secureimage/model/A_0.2463_54x36_20150215.pkl"
 
