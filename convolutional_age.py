@@ -459,13 +459,8 @@ if __name__ == '__main__':
     model_file = "/srv/secureimage/model/A_0.2463_54x36_20150215.pkl"
 
     #Gender training
-    params, test_error = evaluate_lenet5(shared_dataset, 40, 60, 5)
+    params, test_error, pred_list = evaluate_lenet5(shared_dataset, 40, 60, 5)
 
-    age_pred = []
-    for i in test_set:
-        code = predict_model(i)
-        age_pred.append(code)
-    pickle_data(model_file, params)
-
+    age_pred = pred_list
     out = open("/srv/secureimage/test_data/age_pred.pkl")
     pickle_data(out, age_pred)
