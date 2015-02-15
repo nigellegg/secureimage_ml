@@ -429,7 +429,7 @@ def pickle_data(path, data):
     save_file.close()
 
 
-def pred_gender():
+if __name__ == '__main__':
     folder = os.path.dirname(__file__)
     pickle_file = "/srv/secureimage/pickle_age_data/image_secure_data.pkl"
 
@@ -451,14 +451,10 @@ def pred_gender():
     dataset = [train_set, test_set]
     shared_dataset = create_shared_dataset(shuffled_dataset)
 
-    model_file = "/srv/secureimage/model/A_0.2463_54x36_20150209.pkl"
+    model_file = "/srv/secureimage/model/A_0.2463_54x36_20150215.pkl"
 
     #Gender training
     params, test_error = evaluate_lenet5(shared_dataset, 40, 60, 5)
-
-    test_pickle = xxx
-    data = load_data(test_pickle)
-    test_data = data[0]
 
     age_pred = []
     for i in test_set:
