@@ -462,5 +462,5 @@ if __name__ == '__main__':
     params, test_error, pred_list = evaluate_lenet5(shared_dataset, 40, 60, 5)
 
     age_pred = pred_list
-    out = open("/srv/secureimage/test_data/age_pred.pkl")
+    out = open("/srv/secureimage/test_data/age_pred.pkl", "wb")
     pickle_data(out, age_pred)
