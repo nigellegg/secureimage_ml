@@ -450,7 +450,7 @@ if __name__ == '__main__':
     test_y = data[3]
 
     train_x, test_x = img_list, test_x
-    train_y, test_y = gender_y, test_y
+    train_y, test_y = age_y, test_y
     train_set = [train_x, train_y]
     test_set = [test_x, test_y]
     dataset = [train_set, test_set]
