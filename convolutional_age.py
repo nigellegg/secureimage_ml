@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# convolutional network to classify age
-# copyright 2015 Chibwe Ltd
+# convolutional network to classify gender
+# copyright 22015 Chibwe Ltd
 
 """
 This code is an adaptation from the convoluntional network tutorial from
@@ -22,6 +22,7 @@ References:
    http://yann.lecun.com/exdb/publis/pdf/lecun-98.pdf
 
 """
+
 import os
 import sys
 import time
@@ -123,6 +124,11 @@ def create_shared_dataset(dataset):
     def shared_dataset(data_xy, borrow=True):
         """ Function that loads the dataset into shared variables
 
+        The reason we store our dataset in shared variables is to allow
+        Theano to copy it into the GPU memory (when code is run on GPU).
+        Since copying data into the GPU is slow, copying a minibatch everytime
+        is needed (the default behaviour if the data is not in a shared
+        variable) would lead to a large decrease in performance.
         """
         data_x, data_y = data_xy
         shared_x = theano.shared(numpy.asarray(data_x,
@@ -140,23 +146,12 @@ def create_shared_dataset(dataset):
         # lets ous get around this issue
         return shared_x, T.cast(shared_y, 'int32')
 
-    def shared_testset(data_xy, borrow=True):
-
-        data_x, data_y = data_xy
-        shared_x = theano.shared(numpy.asarray(data_x,
-                                               dtype=theano.config.floatX),
-                                 borrow=borrow)
-        shared_y = theano.shared(numpy.asarray(data_y,
-                                               dtype=theano.config.floatX),
-                                 borrow=borrow)
-        return shared_x, T.cast(shared_y, 'int32')
-
     train_set, test_set = dataset
-    test_set_x = shared_testset(test_set)
+    test_set_x, test_set_y = shared_dataset(test_set)
     # valid_set_x, valid_set_y = shared_dataset(valid_set)
     train_set_x, train_set_y = shared_dataset(train_set)
 
-    rval = [(train_set_x, train_set_y), (test_set_x)]
+    rval = [(train_set_x, train_set_y), (test_set_x, test_set_y)]
     return rval
 
 
@@ -181,7 +176,7 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
     rng = numpy.random.RandomState(23455)
 
     train_set_x, train_set_y = datasets[0]
-    test_set_x = datasets[1]
+    test_set_x, test_set_y = datasets[1]
 
     # compute number of minibatches for training, validation and testing
     n_train_batches = train_set_x.get_value(borrow=True).shape[0]
@@ -194,11 +189,6 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
 
     # start-snippet-1
     # x = T.matrix('x')   # the data is presented as rasterized images
-
-
-def build_lenet_model(*args):
-    #if args:
-
     x = T.tensor4('x')
     y = T.ivector('y')  # the labels are presented as 1D vector of
                         # [int] labels
@@ -287,6 +277,7 @@ def build_lenet_model(*args):
         layer3.errors(y),
         givens={
             x: test_set_x[index * batch_size: (index + 1) * batch_size],
+            y: test_set_y[index * batch_size: (index + 1) * batch_size]
         }
     )
 
@@ -294,7 +285,7 @@ def build_lenet_model(*args):
         [index],
         layer3.y_pred,
         givens={
-            x: test_set_x[index * batch_size: (index + 1) * batch_size]})
+            x: new_data[index * batch_size: (index + 1) * batch_size]})
 
     # create a list of all model parameters to be fit by gradient descent
     params = layer3.params + layer2.params + layer1.params + layer0.params
@@ -325,8 +316,6 @@ def build_lenet_model(*args):
         }
     )
 
-
-def train_lenet_model():
     ###############
     # TRAIN MODEL #
     ###############
@@ -412,7 +401,7 @@ def Save_Parameter(model_path, params):
     save_file.close()
 
 
-'''def get_train_test(data):
+def get_train_test(data):
     features = data[0]
     labels = data[1]
 
@@ -424,7 +413,7 @@ def Save_Parameter(model_path, params):
     train_x, test_x, train_y, test_y = train_test_split(features, labels,
                                                         test_size=0.2,
                                                         random_state=seed)
-    return train_x, test_x, train_y, test_y'''
+    return train_x, test_x, train_y, test_y
 
 
 def load_data(pickle_file):
@@ -440,7 +429,7 @@ def pickle_data(path, data):
     save_file.close()
 
 
-if __name__ == '__main__':
+def pred_gender():
     folder = os.path.dirname(__file__)
     pickle_file = "/srv/secureimage/pickle_age_data/image_secure_data.pkl"
 
@@ -455,22 +444,21 @@ if __name__ == '__main__':
     test_x = data[0]
     test_y = data[3]
 
-    train_x, test_x = img_list, test_y
-    train_y, test_y = age_y, test_y
+    train_x, test_x = img_list, test_x
+    train_y, test_y = gender_y, test_y
     train_set = [train_x, train_y]
     test_set = [test_x, test_y]
     dataset = [train_set, test_set]
-    shared_dataset = create_shared_dataset(dataset)
+    shared_dataset = create_shared_dataset(shuffled_dataset)
 
-    # Age training
     model_file = "/srv/secureimage/model/A_0.2463_54x36_20150209.pkl"
 
-    if os.path.isfile(model_file):
-        input = open(model_file, 'rb')
-        params = cPickle.load(input)
-        model = build_lenet_model(params)
-    else:
-        params, test_error = evaluate_lenet5(shared_dataset, 40, 60, 5)
+    #Gender training
+    params, test_error = evaluate_lenet5(shared_dataset, 40, 60, 5)
+
+    test_pickle = xxx
+    data = load_data(test_pickle)
+    test_data = data[0]
 
     age_pred = []
     for i in test_set:
