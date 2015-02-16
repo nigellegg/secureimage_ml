@@ -150,7 +150,7 @@ def create_shared_dataset(dataset):
     test_set_x, test_set_y = shared_dataset(test_set)
     # valid_set_x, valid_set_y = shared_dataset(valid_set)
     train_set_x, train_set_y = shared_dataset(train_set)
-    pred_set_x, pred_set_y = shared_dtatset(pred_set)
+    pred_set_x, pred_set_y = shared_dataset(pred_set)
 
     rval = [(train_set_x, train_set_y), (test_set_x, test_set_y), (pred_set_x, pred_set_y)]
 
