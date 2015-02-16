@@ -119,7 +119,7 @@ class LeNetConvPoolLayer(object):
         self.params = [self.W, self.b]
 
 
-def create_shared_dataset(dataset):
+def create_shared_dataset(dataset, ):
 
     def shared_dataset(data_xy, borrow=True):
         """ Function that loads the dataset into shared variables
@@ -285,7 +285,7 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
         [index],
         layer3.y_pred,
         givens={
-            x: pred_set[index * batch_size: (index + 1) * batch_size]
+            x: pred_set
         }
     )
 
