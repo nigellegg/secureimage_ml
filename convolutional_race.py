@@ -145,12 +145,14 @@ def create_shared_dataset(dataset):
         # lets ous get around this issue
         return shared_x, T.cast(shared_y, 'int32')
 
-    train_set, test_set = dataset
+    train_set, test_set, pred_set = dataset
     test_set_x, test_set_y = shared_dataset(test_set)
     # valid_set_x, valid_set_y = shared_dataset(valid_set)
     train_set_x, train_set_y = shared_dataset(train_set)
+    pred_set_x, pred_set_y = shared_dataset(pred_set)
 
     rval = [(train_set_x, train_set_y), (test_set_x, test_set_y)]
+    
     return rval
 
 
@@ -176,12 +178,15 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
 
     train_set_x, train_set_y = datasets[0]
     test_set_x, test_set_y = datasets[1]
+    pred_set_x, pred_set_y = datasets[2]
 
     # compute number of minibatches for training, validation and testing
     n_train_batches = train_set_x.get_value(borrow=True).shape[0]
     n_test_batches = test_set_x.get_value(borrow=True).shape[0]
+    n_pred_batches = pred_set_x.get_value(borrow=True).shape[0]
     n_train_batches /= batch_size
     n_test_batches /= batch_size
+    n_pred_batches /= batch_size
 
     # allocate symbolic variables for the data
     index = T.lscalar()  # index to a [mini]batch
@@ -284,7 +289,7 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
         [index],
         layer3.y_pred,
         givens={
-            x: new_data[index * batch_size: (index + 1) * batch_size]})
+            x: pred_set_x[index * batch_size: (index + 1) * batch_size]})
 
     # create a list of all model parameters to be fit by gradient descent
     params = layer3.params + layer2.params + layer1.params + layer0.params
@@ -437,6 +442,11 @@ def pred_race():
     age_y = data[4]
     race_y = data[5]
 
+    pred_pickle = "/srv/secureimage/test_data/test_data.pkl"
+    data = load_data(pred_pickle)
+    pred_x = data[0]
+    pred_y = data[3]
+
     sss = StratifiedShuffleSplit(race_y, 1, test_size=0.25, random_state=0)
 
     for train_index, test_index in sss:
@@ -444,22 +454,13 @@ def pred_race():
         train_y, test_y = race_y[train_index], race_y[test_index]
         train_set = [train_x, train_y]
         test_set = [test_x, test_y]
-        shuffled_dataset = [train_set, test_set]
+        pred_set = [pred_x, pred_y]
+        shuffled_dataset = [train_set, test_set, pred_set]
         shared_dataset = create_shared_dataset(shuffled_dataset)
 
         #Race training
-        params, test_error = evaluate_lenet5(shared_dataset, 32, 32, 6)
+        params, test_error, pred_list = evaluate_lenet5(shared_dataset, 32, 32, 6)
 
-    test_pickle = xxx
-    data = load_data(test_pickle)
-    test_data = data[0]
-    
-    race_pred = []
-    for i in test_data:
-        code = predict_model(i)
-        race_pred.append(code)
-
-    model_file = "/srv/secureimage/model/R_0.2463_54x36_20150204.pkl"
-    pickle_data(model_file, params)
-
-    return race_pred
+    race_pred = pred_list
+    out = "/srv/secureimage/test_data/race_pred.pkl"
+    pickle_data(out, race_pred)

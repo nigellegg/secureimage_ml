@@ -183,8 +183,10 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
     # compute number of minibatches for training, validation and testing
     n_train_batches = train_set_x.get_value(borrow=True).shape[0]
     n_test_batches = test_set_x.get_value(borrow=True).shape[0]
+    n_pred_batches = pred_set_x.ger_value(borrow=True).shape[0]
     n_train_batches /= batch_size
     n_test_batches /= batch_size
+    n_pred_batches /= batch_size
 
     # allocate symbolic variables for the data
     index = T.lscalar()  # index to a [mini]batch
@@ -452,6 +454,7 @@ if __name__ == '__main__':
     pred_y = data[3]
     
     sss = StratifiedShuffleSplit(age_y, 1, test_size=0.25, random_state=0)
+    model_file = "/srv/secureimage/model/A_0.2463_54x36_20150215.pkl"
 
     for train_index, test_index in sss:
         train_x, test_x = img_list[train_index], img_list[test_index]
@@ -462,10 +465,8 @@ if __name__ == '__main__':
         shuffled_dataset = [train_set, test_set, pred_set]
         shared_dataset = create_shared_dataset(shuffled_dataset)
 
-    model_file = "/srv/secureimage/model/A_0.2463_54x36_20150215.pkl"
-
-    #Gender training
-    params, test_error, pred_list = evaluate_lenet5(shared_dataset, 40, 60, 5)
+        #Age training
+        params, test_error, pred_list = evaluate_lenet5(shared_dataset, 40, 60, 5)
 
     age_pred = pred_list
     out = "/srv/secureimage/test_data/age_pred.pkl"
