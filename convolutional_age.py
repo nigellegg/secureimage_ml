@@ -286,7 +286,7 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
         [index],
         layer3.y_pred,
         givens={
-            x: pred_set
+            x: pred_set_x[index * batch_size: (index + 1) * batch_size]
         }
     )
 
