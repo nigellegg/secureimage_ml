@@ -434,7 +434,7 @@ def pickle_data(path, data):
     save_file.close()
 
 
-def pred_gender():
+if __name__ == '__main__':
     folder = os.path.dirname(__file__)
     pickle_file = folder+"/srv/secureimage/pickle_data/image_secure_data.pkl"
 
