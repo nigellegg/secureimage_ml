@@ -178,7 +178,8 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
 
     train_set_x, train_set_y = datasets[0]
     test_set_x, test_set_y = datasets[1]
-
+    pred_set_x, pred_set_y = datasets[2]
+    
     # compute number of minibatches for training, validation and testing
     n_train_batches = train_set_x.get_value(borrow=True).shape[0]
     n_test_batches = test_set_x.get_value(borrow=True).shape[0]
