@@ -449,8 +449,7 @@ if __name__ == '__main__':
     data = load_data(pred_pickle)
     pred_x = data[0]
     pred_y = data[3]
-    pred_set = [pred_x, pred_y]
-
+    
     sss = StratifiedShuffleSplit(age_y, 1, test_size=0.25, random_state=0)
 
     for train_index, test_index in sss:
@@ -458,7 +457,8 @@ if __name__ == '__main__':
         train_y, test_y = age_y[train_index], age_y[test_index]
         train_set = [train_x, train_y]
         test_set = [test_x, test_y]
-        shuffled_dataset = [train_set, test_set]
+        pred_set = [pred_x, pred_y]
+        shuffled_dataset = [train_set, test_set, pred_set]
         shared_dataset = create_shared_dataset(shuffled_dataset)
 
     model_file = "/srv/secureimage/model/A_0.2463_54x36_20150215.pkl"
