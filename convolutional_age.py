@@ -452,7 +452,7 @@ if __name__ == '__main__':
     data = load_data(pred_pickle)
     pred_x = data[0]
     pred_y = data[3]
-    
+
     sss = StratifiedShuffleSplit(age_y, 1, test_size=0.25, random_state=0)
     model_file = "/srv/secureimage/model/A_0.2463_54x36_20150215.pkl"
 
