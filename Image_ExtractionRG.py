@@ -183,7 +183,7 @@ if __name__ == '__main__':
     data_k = np.genfromtxt(img_csv_k, dtype=None, delimiter=',', skip_header=1)
     data_dp = np.genfromtxt(img_csv_dp, dtype=None, delimiter=',', skip_header=1)
 
-    total_data = np.append(np.append(data_dp, axis=0), data_k, axis=0)
+    total_data = np.append(data_dp, data_k, axis=0)
 
     # exist_fg, non_exist_fg=verify_images(data_fg, path)
     # exist_k, non_exist_k=verify_images(data_k, path)
