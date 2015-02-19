@@ -175,11 +175,11 @@ if __name__ == '__main__':
     #project_path = "c:/users/xie/playground/cctv classification/"
 
     # files=get_files(path)
-    img_csv_fg = img_data_path + 'Flanagan and Growthpoint.csv'
+    #img_csv_fg = img_data_path + 'Flanagan and Growthpoint.csv'
     img_csv_k = img_data_path + 'Krugersdorp.csv'
     img_csv_dp = img_data_path+'Dischem and Pampa.csv'
 
-    data_fg = np.genfromtxt(img_csv_fg, dtype=None, delimiter=',', skip_header=1)
+    #data_fg = np.genfromtxt(img_csv_fg, dtype=None, delimiter=',', skip_header=1)
     data_k = np.genfromtxt(img_csv_k, dtype=None, delimiter=',', skip_header=1)
     data_dp = np.genfromtxt(img_csv_dp, dtype=None, delimiter=',', skip_header=1)
 
