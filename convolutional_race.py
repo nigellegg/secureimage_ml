@@ -459,8 +459,8 @@ if __name__ == '__main__':
         shared_dataset = create_shared_dataset(shuffled_dataset)
 
         #Race training
-        params, test_error, pred_list = evaluate_lenet5(shared_dataset, 32, 32, 6)
+        params, test_error = evaluate_lenet5(shared_dataset, 32, 32, 6)
 
-    race_pred = pred_list
-    out = "/srv/secureimage/test_data/race_pred.pkl"
-    pickle_data(out, race_pred)
+    #race_pred = pred_list
+    #out = "/srv/secureimage/test_data/race_pred.pkl"
+    #pickle_data(out, race_pred)
