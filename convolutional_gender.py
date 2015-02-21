@@ -463,6 +463,9 @@ if __name__ == '__main__':
         #Gender training
         params, test_error = evaluate_lenet5(shared_dataset, 32, 32, 4)
 
+    model_file = "/srv/secureimage/model/G_0.2463_54x36_20150204.pkl"
+    pickle_data(model_file, params)
+
     #gender_pred = pred_list
     #out = "/srv/secureimage/test_data/gender_pred.pkl"
     #pickle_data(out, gender_pred)

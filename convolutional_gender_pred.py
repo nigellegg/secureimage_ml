@@ -1,27 +1,8 @@
 # -*- coding: utf-8 -*-
-# convolutional network to classify race
+# convolutional network to classify gender
 # copyright 2015 Chibwe Ltd
 
-"""
-This code is an adaptation from the convoluntional network tutorial from
-deeplearning.net. It is an simplified version of the "LeNet" approach,
-details are described as below:
 
-This implementation simplifies the model in the following ways:
- - LeNetConvPool doesn't implement location-specific gain and bias parameters
- - LeNetConvPool doesn't implement pooling by average, it implements pooling
-   by max.
- - Digit classification is implemented with a logistic regression rather than
-   an RBF network
- - LeNet5 was not fully-connected convolutions at second layer
-
-References:
- - Y. LeCun, L. Bottou, Y. Bengio and P. Haffner:
-   Gradient-Based Learning Applied to Document
-   Recognition, Proceedings of the IEEE, 86(11):2278-2324, November 1998.
-   http://yann.lecun.com/exdb/publis/pdf/lecun-98.pdf
-
-"""
 import os
 import sys
 import time
@@ -47,36 +28,12 @@ class LeNetConvPoolLayer(object):
     """Pool Layer of a convolutional network """
 
     def __init__(self, rng, input, filter_shape, image_shape, poolsize=(2, 2)):
-        """
-        Allocate a LeNetConvPoolLayer with shared variable internal parameters.
-
-        :type rng: numpy.random.RandomState
-        :param rng: a random number generator used to initialize weights
-
-        :type input: theano.tensor.dtensor4
-        :param input: symbolic image tensor, of shape image_shape
-
-        :type filter_shape: tuple or list of length 4
-        :param filter_shape: (number of filters, num input feature maps,
-                              filter height, filter width)
-
-        :type image_shape: tuple or list of length 4
-        :param image_shape: (batch size, num input feature maps,
-                             image height, image width)
-
-        :type poolsize: tuple or list of length 2
-        :param poolsize: the downsampling (pooling) factor (#rows, #cols)
-        """
 
         assert image_shape[1] == filter_shape[1]
         self.input = input
 
-        # there are "num input feature maps * filter height * filter width"
-        # inputs to each hidden unit
         fan_in = numpy.prod(filter_shape[1:])
-        # each unit in the lower layer receives a gradient from:
-        # "num output feature maps * filter height * filter width" /
-        #   pooling size
+
         fan_out = (filter_shape[0] * numpy.prod(filter_shape[2:]) /
                    numpy.prod(poolsize))
         # initialize weights with random weights
@@ -88,11 +45,12 @@ class LeNetConvPoolLayer(object):
             ),
             borrow=True
         )
+        # or take W from params
 
         # the bias is a 1D tensor -- one bias per output feature map
         b_values = numpy.zeros((filter_shape[0],), dtype=theano.config.floatX)
         self.b = theano.shared(value=b_values, borrow=True)
-
+        # or take b from params
         # convolve input feature maps with filters
         conv_out = conv.conv2d(
             input=input,
@@ -151,8 +109,8 @@ def create_shared_dataset(dataset):
     train_set_x, train_set_y = shared_dataset(train_set)
     pred_set_x, pred_set_y = shared_dataset(pred_set)
 
-    rval = [(train_set_x, train_set_y), (test_set_x, test_set_y)]
-    
+    rval = [(train_set_x, train_set_y), (test_set_x, test_set_y), (pred_set_x, pred_set_y)]
+
     return rval
 
 
@@ -393,7 +351,8 @@ def evaluate_lenet5(datasets, imgh, imgw, nclass, L1_reg=0.00, L2_reg=0.0001,
           'with test performance %f %%' %
           (best_test_loss * 100., best_iter + 1, best_test_loss * 100.))
     print 'The code ran for %.2fm' % ((end_time - start_time) / 60.)
-    return params, test_error
+
+    return params, test_error, pred_list
 
 
 def Save_Parameter(model_path, params):
@@ -434,7 +393,7 @@ def pickle_data(path, data):
 
 if __name__ == '__main__':
     folder = os.path.dirname(__file__)
-    pickle_file = "/srv/secureimage/pickle_data/image_secure_data.pkl"
+    pickle_file = folder+"/srv/secureimage/pickle_data/image_secure_data.pkl"
 
     data = load_data(pickle_file)
     img_list = data[0]
@@ -447,23 +406,22 @@ if __name__ == '__main__':
     pred_x = data[0]
     pred_y = data[3]
 
-    sss = StratifiedShuffleSplit(race_y, 1, test_size=0.25, random_state=0)
+    sss = StratifiedShuffleSplit(gender_y, 1, test_size=0.25, random_state=0)
 
     for train_index, test_index in sss:
         train_x, test_x = img_list[train_index], img_list[test_index]
-        train_y, test_y = race_y[train_index], race_y[test_index]
+        train_y, test_y = gender_y[train_index], gender_y[test_index]
         train_set = [train_x, train_y]
         test_set = [test_x, test_y]
         pred_set = [pred_x, pred_y]
         shuffled_dataset = [train_set, test_set, pred_set]
         shared_dataset = create_shared_dataset(shuffled_dataset)
 
-        #Race training
-        params, test_error = evaluate_lenet5(shared_dataset, 32, 32, 6)
+        #Gender training
+        params, test_error = evaluate_lenet5(shared_dataset, 32, 32, 4)
 
-    model_file = "/srv/secureimage/model/R_0.2463_54x36_20150204.pkl"
-    pickle_data(model_file, params)
+  
 
-    #race_pred = pred_list
-    #out = "/srv/secureimage/test_data/race_pred.pkl"
-    #pickle_data(out, race_pred)
+    #gender_pred = pred_list
+    #out = "/srv/secureimage/test_data/gender_pred.pkl"
+    #pickle_data(out, gender_pred)
